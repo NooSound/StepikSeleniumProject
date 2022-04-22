@@ -21,6 +21,6 @@ def browser(request):
     browser = webdriver.Chrome(options=options)
 
     yield browser
-    time.sleep(2)  #визуальная проверка изменения языка
+    # time.sleep(2)  #визуальная проверка изменения языка
     print("\nquit browser..")
     browser.quit()
