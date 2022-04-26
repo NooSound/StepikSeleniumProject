@@ -1,6 +1,8 @@
 from .base_page import BasePage
 from .locators import LoginPageLocators
-
+import random
+from string import ascii_letters, digits
+import time
 
 
 class LoginPage(BasePage):
@@ -19,4 +21,26 @@ class LoginPage(BasePage):
 
     def should_be_register_form(self):
         assert self.is_element_present(*LoginPageLocators.REGISTER_FORM), "Register form is not presented"
+
+    def generate_password(self):
+        LETTER = ''.join((set(ascii_letters) | set(digits)))
+        pwd = ''
+        while len(pwd) != 10:
+            pwd += random.choice(LETTER)
+        return pwd
+
+    def register_new_user(self):
+        password = self.generate_password()
+        email = str(time.time()) + "@fakemail.org"
+
+        self.browser.find_element(*LoginPageLocators.EMAIL_ADDRESS).send_keys(email)
+
+        self.browser.find_element(*LoginPageLocators.PASSWORD).send_keys(password)
+
+        self.browser.find_element(*LoginPageLocators.PASSWORD2).send_keys(password)
+
+        self.browser.find_element(*LoginPageLocators.REGISTER_BTN).click()
+
+
+
 

@@ -1,18 +1,21 @@
 from .Pages.main_page import MainPage
 from .Pages.product_page import ProductPage
 from .Pages.basket_page import BasketPage
+from .Pages.base_page import BasePage
+from .Pages.login_page import LoginPage
+
 import time
 import pytest
 
 # для одной ссылки:
-def test_guest_can_add_product_to_basket(browser):
-    link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019"
-    page = ProductPage(browser, link)
-    page.open()
-    page.should_be_add_to_basket_btn()
-    page.add_to_basket()
-    page.should_be_successfylly_added()
-    # time.sleep(100)
+# def test_guest_can_add_product_to_basket(browser):
+#     link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019"
+#     page = ProductPage(browser, link)
+#     page.open()
+#     page.should_be_add_to_basket_btn()
+#     page.add_to_basket()
+#     page.should_be_successfylly_added()
+#     # time.sleep(100)
 
 
 #
@@ -70,12 +73,39 @@ def test_guest_can_add_product_to_basket(browser):
 #     page.open()
 #     page.go_to_login_page()
 
-def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
+# def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
+#
+#     link = "http://selenium1py.pythonanywhere.com"
+#     page = BasketPage(browser, link)
+#     page.open()
+#     page.go_to_basket_page()
+#     page.should_cant_see_product_in_basket_opened_from_product_page()
 
-    link = "http://selenium1py.pythonanywhere.com"
-    page = BasketPage(browser, link)
-    page.open()
-    page.go_to_basket_page()
-    page.should_cant_see_product_in_basket_opened_from_product_page()
+
+class TestUserAddToBasketFromProductPage:
+
+    @pytest.fixture(scope="function", autouse=True)
+    def setup(self, browser):
+        link = "https://selenium1py.pythonanywhere.com/ru/accounts/login/"
+        self.page = LoginPage(browser, link)
+        self.page.open()
+        self.page.register_new_user()
+        self.page.should_be_authorized_user()
+
+    def test_user_cant_see_success_message(self, browser):
+        link = "https://selenium1py.pythonanywhere.com/ru/catalogue/coders-at-work_207/"
+        page = ProductPage(browser, link)
+        page.open()
+        page.should_not_be_success_message()
+
+
+    def test_user_can_add_product_to_basket(self, browser):
+        link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=newYear2019"
+        page = ProductPage(browser, link)
+        page.open()
+        page.should_be_add_to_basket_btn()
+        page.add_to_basket()
+        page.should_be_successfylly_added()
+
 
 
