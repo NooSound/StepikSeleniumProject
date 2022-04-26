@@ -2,8 +2,6 @@ from .base_page import BasePage
 from .locators import ProductPageLocators
 
 
-
-
 class ProductPage(BasePage):
 
     def add_to_basket(self):
@@ -11,11 +9,8 @@ class ProductPage(BasePage):
         button.click()
         self.solve_quiz_and_get_code()
 
-
-
     def should_be_add_to_basket_btn(self):
         assert self.is_element_present(*ProductPageLocators.ADD_TO_BASKET_BTN), "No button"
-
 
     def should_be_successfylly_added(self):
         product_name = self.browser.find_element(*ProductPageLocators.PRODUCT_NAME).text
