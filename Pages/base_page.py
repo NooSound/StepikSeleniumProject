@@ -24,16 +24,16 @@ class BasePage():
         # return LoginPage(browser=self.browser , url=self.browser.current_url)
 
     def should_be_login_link(self):
-        assert self.is_element_present(*BasePageLocators.LOGIN_LINK) , "Login link is not presented"
+        assert self.is_element_present(*BasePageLocators.LOGIN_LINK), "Login link is not presented"
 
 
     def open(self):
         self.browser.get(self.url)
 
 #поиск элемента на странице
-    def is_element_present(self , how , what):
+    def is_element_present(self, how, what):
         try:
-            self.browser.find_element(how , what)
+            self.browser.find_element(how, what)
         except (NoSuchElementException):
             return False
         return True
@@ -55,23 +55,25 @@ class BasePage():
             print("No second alert presented")
 
 # поиск отстутствия элемента на странице
-    def is_not_element_present(self , how , what , timeout=4):
+    def is_not_element_present(self, how, what, timeout=4):
         try:
-            WebDriverWait(self.browser , timeout).until(EC.presence_of_element_located((how , what)))
+            WebDriverWait(self.browser, timeout).until(EC.presence_of_element_located((how, what)))
         except TimeoutException:
             return True
 
         return False
+
 # проверка изчезания элемента по явному ожиданию
-    def is_disappeared(self , how , what , timeout=4):
+    def is_disappeared(self, how, what, timeout=4):
         try:
-            WebDriverWait(self.browser , timeout , 1 , TimeoutException). \
-                until_not(EC.presence_of_element_located((how , what)))
+            WebDriverWait(self.browser, timeout, 1, TimeoutException). \
+                until_not(EC.presence_of_element_located((how, what)))
         except TimeoutException:
             return False
 
         return True
+
 #проверка авторизации
     def should_be_authorized_user(self):
-        assert self.is_element_present(*BasePageLocators.USER_ICON) , "User icon is not presented," \
+        assert self.is_element_present(*BasePageLocators.USER_ICON), "User icon is not presented," \
                                                                       " probably unauthorised user"
